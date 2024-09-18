@@ -1,4 +1,4 @@
-package org.BatiCuisine.entities;
+package org.BatiCuisine.models.entities;
 
 import java.util.List;
 
@@ -8,17 +8,17 @@ public class Client {
     private String nom;
     private String address;
     private String phoneNumber;
-    private boolean estProfessionnel;
+    private boolean estProfessionnal;
 
     private List<Projet> projets;
 
     public Client() {}
 
-    public Client(String nom, String address, String phoneNumber, boolean estProfessionnel) {
+    public Client(String nom, String address, String phoneNumber, boolean estProfessionnal) {
         this.nom = nom;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.estProfessionnel = estProfessionnel;
+        this.estProfessionnal = estProfessionnal;
     }
 
     public int getId() { return id; }
@@ -37,9 +37,9 @@ public class Client {
 
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
 
-    public boolean isEstProfessionnel() { return estProfessionnel; }
+    public boolean isEstProfessionnal() { return estProfessionnal; }
 
-    public void setEstProfessionnel(boolean estProfessionnel) { this.estProfessionnel = estProfessionnel; }
+    public void setEstProfessionnal(boolean estProfessionnel) { this.estProfessionnal = estProfessionnel; }
 
     public List<Projet> getProjets() { return projets; }
 
@@ -52,7 +52,7 @@ public class Client {
                 ", nom='" + nom + '\'' +
                 ", address='" + address + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", estProfessionnel=" + estProfessionnel +
+                ", estProfessionnel=" + estProfessionnal +
                 '}';
     }
 }
