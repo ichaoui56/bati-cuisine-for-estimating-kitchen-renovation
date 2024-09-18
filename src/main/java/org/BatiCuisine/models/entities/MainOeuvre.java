@@ -1,4 +1,4 @@
-package org.BatiCuisine.entities;
+package org.BatiCuisine.models.entities;
 
 public class MainOeuvre {
 

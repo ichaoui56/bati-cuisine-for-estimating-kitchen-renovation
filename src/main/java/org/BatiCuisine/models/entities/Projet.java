@@ -1,6 +1,6 @@
-package org.BatiCuisine.entities;
+package org.BatiCuisine.models.entities;
 
-import org.BatiCuisine.enums.EtatProjet;
+import org.BatiCuisine.models.enums.EtatProjet;
 
 public class Projet {
 

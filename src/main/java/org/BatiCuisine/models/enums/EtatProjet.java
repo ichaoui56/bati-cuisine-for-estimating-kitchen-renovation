@@ -1,4 +1,4 @@
-package org.BatiCuisine.enums;
+package org.BatiCuisine.models.enums;
 
 public enum EtatProjet {
     EN_COURS,
