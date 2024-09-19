@@ -13,7 +13,8 @@ public class MainUI {
     public MainUI() throws SQLException {
         ClientRepository clientRepository = new ClientRepositoryImpl();
         ClientService clientService = new ClientServiceImpl(clientRepository);
-        ClientUI clientUI = new ClientUI(clientService);
+        ProjetUI projetUI = new ProjetUI();
+        ClientUI clientUI = new ClientUI(clientService, projetUI);
         principalUI = new PrincipalUI(clientUI);
     }
 

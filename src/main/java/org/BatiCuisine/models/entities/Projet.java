@@ -8,6 +8,7 @@ public class Projet {
     private String nomProjet;
     private double margeBeneficiaire;
     private double coutTotal;
+    private int surface;
     private EtatProjet etat;
 
     private Client client;
@@ -15,10 +16,11 @@ public class Projet {
 
     public Projet() {}
 
-    public Projet(String nomProjet, double margeBeneficiaire, double coutTotal, EtatProjet etat, Client client, Devis devis) {
+    public Projet(String nomProjet, double margeBeneficiaire, double coutTotal, EtatProjet etat, Client client, Devis devis, int surface) {
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
         this.coutTotal = coutTotal;
+        this.surface = surface;
         this.etat = etat;
         this.client = client;
         this.devis = devis;
@@ -33,6 +35,10 @@ public class Projet {
     public void setNomProjet(String nomProjet) { this.nomProjet = nomProjet; }
 
     public double getMargeBeneficiaire() { return margeBeneficiaire; }
+
+    public int getSurface() { return surface; }
+
+    public void setSurface(int surface) { this.surface = surface; }
 
     public void setMargeBeneficiaire(double margeBeneficiaire) { this.margeBeneficiaire = margeBeneficiaire; }
 

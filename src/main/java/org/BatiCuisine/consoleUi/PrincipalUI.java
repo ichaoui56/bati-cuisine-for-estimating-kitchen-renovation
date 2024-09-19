@@ -18,22 +18,22 @@ public class PrincipalUI {
 
         do {
             System.out.println("\n\n");
-            System.out.println("**================================|(    📃   Menu Principal   📃    )|=================================**");
-            System.out.println("||                                                                                                      ||");
-            System.out.println("||                                   1. Créer un nouveau projet                                         ||");
-            System.out.println("||                                   2. Afficher les projets existants                                  ||");
-            System.out.println("||                                   3. Calculer le coût d'un projet                                    ||");
-            System.out.println("||                                   4. Quitter                                                         ||");
-            System.out.println("||                                                                                                      ||");
-            System.out.println("**======================================================================================================**");
-            System.out.print("\n                                          Entrez votre choix : ");
+            System.out.println("**===============================|(    📃   Menu Principal   📃    )|================================**");
+            System.out.println("||                                                                                                    ||");
+            System.out.println("||                                   1. Créer un nouveau projet                                       ||");
+            System.out.println("||                                   2. Afficher les projets existants                                ||");
+            System.out.println("||                                   3. Calculer le coût d'un projet                                  ||");
+            System.out.println("||                                   4. Quitter                                                       ||");
+            System.out.println("||                                                                                                    ||");
+            System.out.println("**====================================================================================================**");
+            System.out.print("                                         Entrez votre choix : ");
 
             // Read and validate menu choice
             String input = scanner.nextLine().trim();
             try {
                 choix = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println("Choix invalide. Veuillez réessayer.");
+                System.out.println(" Choix invalide. Veuillez réessayer.");
                 continue;
             }
 

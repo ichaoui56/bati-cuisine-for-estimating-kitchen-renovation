@@ -8,27 +8,30 @@ import java.util.Scanner;
 
 public class ClientUI {
     private final ClientService clientService;
+    private final ProjetUI projetUI;
     private final Scanner scanner = new Scanner(System.in);
 
-    ClientUI(ClientService clientService) {
+    ClientUI(ClientService clientService, ProjetUI projetUI) {
         this.clientService = clientService;
+        this.projetUI = projetUI;
     }
 
     public void createProject() throws SQLException {
         int choix = 0;
     
         do {
-            System.out.println("\n\n");
+            System.out.println("\n");
             System.out.println("**=================================|(    📃   Menu Client   📃    )|=================================**");
-            System.out.println("||                                                                                                        ||");
-            System.out.println("||                                    1. Chercher un client existant                                      ||");
-            System.out.println("||                                    2. Ajouter un nouveau client                                        ||");
-            System.out.println("||                                    3. Quitter                                                          ||");
-            System.out.println("||                                                                                                        ||");
-            System.out.println("**======================================================================================================**");
-            System.out.print("\n                                          Entrez votre choix : ");
-
+            System.out.println("||                                                                                                    ||");
+            System.out.println("||                                    1. Chercher un client existant                                  ||");
+            System.out.println("||                                    2. Ajouter un nouveau client                                    ||");
+            System.out.println("||                                    3. Quitter                                                      ||");
+            System.out.println("||                                                                                                    ||");
+            System.out.println("**====================================================================================================**");
+            System.out.print("                                           Entrez votre choix : ");
             String input = scanner.nextLine().trim();
+            System.out.println("\n");
+
             try {
                 choix = Integer.parseInt(input);
             } catch (NumberFormatException e) {
@@ -38,6 +41,7 @@ public class ClientUI {
 
             switch (choix) {
                 case 1:
+
                     System.out.println("Chercher un client existant...");
                     break;
                 case 2:
@@ -53,52 +57,38 @@ public class ClientUI {
     }
 
     public void addNewClient() throws SQLException {
-        System.out.print("                                              Entrez le nom du client : ");
+        System.out.println("**=================================|(    📃   Add Client   📃    )|=================================**");
+        System.out.println("||                                                                                                   ||");
+        System.out.print("||                                       Entrez le nom du client :");
         String nom = scanner.nextLine().trim();
-        if (nom.isEmpty()) {
-            System.out.println("                                        Le nom du client ne peut pas être vide.");
-            return;
-        }
 
-        // Read and validate address
-        System.out.print("                                              Entrez l'adresse du client : ");
+
+        System.out.print("||                                       Entrez l'adresse du client :");
         String address = scanner.nextLine().trim();
-        if (address.isEmpty()) {
-            System.out.println("                                        L'adresse du client ne peut pas être vide.");
-            return;
-        }
 
-        // Read and validate phone number
-        System.out.print("                                              Entrez le numéro de téléphone du client : ");
+
+        System.out.print("||                                  Entrez le numéro de téléphone du client :");
         String phoneNumber = scanner.nextLine().trim();
-        if (phoneNumber.isEmpty()) {
-            System.out.println("Le numéro de téléphone du client ne peut pas être vide.");
-            return;
-        }
 
-        boolean estProfessionnal = false;
-        boolean validInput = false;
+        System.out.print("||                               Le client est-il professionnel (true/false) : ");
+        boolean estProfessionnal = Boolean.parseBoolean(scanner.nextLine().trim());
+        System.out.println("**====================================================================================================**");
 
-        while (!validInput) {
-            System.out.print("Le client est-il professionnel (true/false) : ");
-            if (scanner.hasNextBoolean()) {
-                estProfessionnal = scanner.nextBoolean();
-                validInput = true;
-            } else {
-                System.out.println("Entrée invalide pour le boolean. Veuillez entrer 'true' ou 'false'.");
-                scanner.next();
-            }
-        }
-        scanner.nextLine();
 
         Client client = new Client(nom, address, phoneNumber, estProfessionnal);
-        boolean isAdded = clientService.ajouterClient(client);
+        int clientId = clientService.ajouterClient(client);
 
-        if (isAdded) {
-            System.out.println("Client ajouté avec succès !");
+        if (clientId > 0) {
+            System.out.println("\n");
+            System.out.println("                                       Client ajouté avec succès !");
+            System.out.println("\n");
+            projetUI.addProjet(clientId);
+
         } else {
-            System.out.println("Échec de l'ajout du client.");
+            System.out.println("                                      Échec de l'ajout du client.");
         }
+
+
     }
 
 }
