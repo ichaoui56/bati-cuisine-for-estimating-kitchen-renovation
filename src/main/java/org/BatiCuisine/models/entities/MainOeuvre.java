@@ -1,24 +1,17 @@
 package org.BatiCuisine.models.entities;
 
-public class MainOeuvre {
+public class MainOeuvre extends Composant {
 
-    private int id;
     private double coutHoraire;
     private int nombreHeures;
 
-    private Composant composant;
-
     public MainOeuvre() {}
 
-    public MainOeuvre(double coutHoraire, int nombreHeures, Composant composant) {
+    public MainOeuvre(String nom, double tauxTVA, String typeComposant, Projet projet, double coutHoraire, int nombreHeures) {
+        super(nom, tauxTVA, typeComposant, projet);
         this.coutHoraire = coutHoraire;
         this.nombreHeures = nombreHeures;
-        this.composant = composant;
     }
-
-    public int getId() { return id; }
-
-    public void setId(int id) { this.id = id; }
 
     public double getCoutHoraire() { return coutHoraire; }
 
@@ -28,18 +21,11 @@ public class MainOeuvre {
 
     public void setNombreHeures(int nombreHeures) { this.nombreHeures = nombreHeures; }
 
-    public Composant getComposant() { return composant; }
-
-    public void setComposant(Composant composant) { this.composant = composant; }
-
     @Override
     public String toString() {
         return "MainOeuvre{" +
-                "id=" + id +
-                ", coutHoraire=" + coutHoraire +
+                "coutHoraire=" + coutHoraire +
                 ", nombreHeures=" + nombreHeures +
-                ", composant=" + composant +
-                '}';
+                "} " + super.toString();
     }
 }
-

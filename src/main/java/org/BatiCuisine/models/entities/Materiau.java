@@ -1,8 +1,8 @@
 package org.BatiCuisine.models.entities;
 
-public class Materiau {
+public class Materiau extends Composant{
 
-    private int id;
+
     private double coutUnitaire;
     private double quantite;
     private double coutTransport;
@@ -12,17 +12,13 @@ public class Materiau {
 
     public Materiau() {}
 
-    public Materiau(double coutUnitaire, double quantite, double coutTransport, double coefficientQualite, Composant composant) {
+    public Materiau(double coutUnitaire, double quantite, double coutTransport, double coefficientQualite, String nom, double tauxTVA, String typeComposant, Projet projet) {
+        super(nom, tauxTVA, typeComposant, projet);
         this.coutUnitaire = coutUnitaire;
         this.quantite = quantite;
         this.coutTransport = coutTransport;
         this.coefficientQualite = coefficientQualite;
-        this.composant = composant;
     }
-
-    public int getId() { return id; }
-
-    public void setId(int id) { this.id = id; }
 
     public double getCoutUnitaire() { return coutUnitaire; }
 
@@ -47,13 +43,12 @@ public class Materiau {
     @Override
     public String toString() {
         return "Materiau{" +
-                "id=" + id +
                 ", coutUnitaire=" + coutUnitaire +
                 ", quantite=" + quantite +
                 ", coutTransport=" + coutTransport +
                 ", coefficientQualite=" + coefficientQualite +
                 ", composant=" + composant +
-                '}';
+                '}' + super.toString();
     }
 }
 

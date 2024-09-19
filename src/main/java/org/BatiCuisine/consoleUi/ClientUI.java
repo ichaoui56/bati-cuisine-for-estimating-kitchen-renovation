@@ -10,60 +10,16 @@ public class ClientUI {
     private final ClientService clientService;
     private final Scanner scanner = new Scanner(System.in);
 
-    public ClientUI(ClientService clientService) {
+    ClientUI(ClientService clientService) {
         this.clientService = clientService;
-    }
-
-    public void displayMenu() throws SQLException {
-        int choix = 0;
-
-        do {
-            System.out.println("\n\n");
-            System.out.println("**================================|(    📃   Menu Principal   📃    )|=================================**");
-            System.out.println("||                                                                                                      ||");
-            System.out.println("||                                   1. Créer un nouveau projet                                         ||");
-            System.out.println("||                                   2. Afficher les projets existants                                  ||");
-            System.out.println("||                                   3. Calculer le coût d'un projet                                    ||");
-            System.out.println("||                                   4. Quitter                                                         ||");
-            System.out.println("||                                                                                                      ||");
-            System.out.println("**======================================================================================================**");
-            System.out.print("\n                                          Entrez votre choix : ");
-
-            // Read and validate menu choice
-            String input = scanner.nextLine().trim();
-            try {
-                choix = Integer.parseInt(input);
-            } catch (NumberFormatException e) {
-                System.out.println("Choix invalide. Veuillez réessayer.");
-                continue;
-            }
-
-            switch (choix) {
-                case 1:
-                    createProject();
-                    break;
-                case 2:
-                    System.out.println("Affichage des projets existants...");
-                    break;
-                case 3:
-                    System.out.println("Calcul du coût d'un projet...");
-                    break;
-                case 4:
-                    System.out.println("Quitter l'application...");
-                    break;
-                default:
-                    System.out.println("Choix invalide. Veuillez réessayer.");
-            }
-
-        } while (choix != 4);
     }
 
     public void createProject() throws SQLException {
         int choix = 0;
-
+    
         do {
             System.out.println("\n\n");
-            System.out.println("**=================================|(    📃   Menu Principal   📃    )|=================================**");
+            System.out.println("**=================================|(    📃   Menu Client   📃    )|=================================**");
             System.out.println("||                                                                                                        ||");
             System.out.println("||                                    1. Chercher un client existant                                      ||");
             System.out.println("||                                    2. Ajouter un nouveau client                                        ||");
@@ -72,7 +28,6 @@ public class ClientUI {
             System.out.println("**======================================================================================================**");
             System.out.print("\n                                          Entrez votre choix : ");
 
-            // Read and validate menu choice
             String input = scanner.nextLine().trim();
             try {
                 choix = Integer.parseInt(input);
@@ -98,12 +53,11 @@ public class ClientUI {
     }
 
     public void addNewClient() throws SQLException {
-        // Read and validate client name
         System.out.print("                                              Entrez le nom du client : ");
         String nom = scanner.nextLine().trim();
         if (nom.isEmpty()) {
             System.out.println("                                        Le nom du client ne peut pas être vide.");
-            return; // Exit method if input is invalid
+            return;
         }
 
         // Read and validate address
@@ -111,7 +65,7 @@ public class ClientUI {
         String address = scanner.nextLine().trim();
         if (address.isEmpty()) {
             System.out.println("                                        L'adresse du client ne peut pas être vide.");
-            return; // Exit method if input is invalid
+            return;
         }
 
         // Read and validate phone number
@@ -119,10 +73,9 @@ public class ClientUI {
         String phoneNumber = scanner.nextLine().trim();
         if (phoneNumber.isEmpty()) {
             System.out.println("Le numéro de téléphone du client ne peut pas être vide.");
-            return; // Exit method if input is invalid
+            return;
         }
 
-        // Read and validate professional status
         boolean estProfessionnal = false;
         boolean validInput = false;
 
@@ -133,12 +86,11 @@ public class ClientUI {
                 validInput = true;
             } else {
                 System.out.println("Entrée invalide pour le boolean. Veuillez entrer 'true' ou 'false'.");
-                scanner.next(); // Clear invalid input
+                scanner.next();
             }
         }
-        scanner.nextLine(); // Clear the newline character left in the buffer
+        scanner.nextLine();
 
-        // Create and add client
         Client client = new Client(nom, address, phoneNumber, estProfessionnal);
         boolean isAdded = clientService.ajouterClient(client);
 
@@ -148,4 +100,5 @@ public class ClientUI {
             System.out.println("Échec de l'ajout du client.");
         }
     }
+
 }
