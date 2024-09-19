@@ -8,17 +8,17 @@ import org.BatiCuisine.services.Inter.ClientService;
 import java.sql.SQLException;
 
 public class MainUI {
-    private final ClientUI clientUI;
+    private final PrincipalUI principalUI;
 
     public MainUI() throws SQLException {
         ClientRepository clientRepository = new ClientRepositoryImpl();
         ClientService clientService = new ClientServiceImpl(clientRepository);
-
-        clientUI = new ClientUI(clientService);
+        ClientUI clientUI = new ClientUI(clientService);
+        principalUI = new PrincipalUI(clientUI);
     }
 
     public void run() throws SQLException {
-        clientUI.displayMenu();
+        principalUI.displayMenu();
     }
 
 }
