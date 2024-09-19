@@ -2,12 +2,13 @@ package org.BatiCuisine.repositories.Impl;
 
 import org.BatiCuisine.config.DatabaseConnection;
 import org.BatiCuisine.models.entities.Material;
+import org.BatiCuisine.repositories.Inter.MaterialRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class MaterialRepositoryImpl {
+public class MaterialRepositoryImpl implements MaterialRepository {
     private final Connection connection;
 
     public MaterialRepositoryImpl() throws SQLException {

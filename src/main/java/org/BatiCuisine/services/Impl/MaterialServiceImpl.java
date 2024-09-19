@@ -13,7 +13,7 @@ public class MaterialServiceImpl implements MaterialService {
         this.materialRepository = materialRepository;
     }
 
-    public boolean ajouterMaterial(Material material) {
+    public boolean ajouterMaterial(Material material) throws SQLException {
         materialRepository.addMaterial(material);
         return true;
     }
