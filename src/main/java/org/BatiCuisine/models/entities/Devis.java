@@ -9,7 +9,7 @@ public class Devis {
     private double montantTTC;
 
     private Projet projet;
-    private List<Materiau> materiaux;
+    private List<Material> materiaux;
     private List<MainOeuvre> mainDoeuvres;
 
     public Devis() {}
@@ -36,9 +36,9 @@ public class Devis {
 
     public void setProjet(Projet projet) { this.projet = projet; }
 
-    public List<Materiau> getMateriaux() { return materiaux; }
+    public List<Material> getMateriaux() { return materiaux; }
 
-    public void setMateriaux(List<Materiau> materiaux) { this.materiaux = materiaux; }
+    public void setMateriaux(List<Material> materiaux) { this.materiaux = materiaux; }
 
     public List<MainOeuvre> getMainDoeuvres() { return mainDoeuvres; }
 

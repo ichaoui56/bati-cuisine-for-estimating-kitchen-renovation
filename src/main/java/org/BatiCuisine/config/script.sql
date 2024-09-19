@@ -13,6 +13,7 @@ CREATE TABLE Projet (
                         nomProjet VARCHAR(255),
                         margeBeneficiaire DOUBLE PRECISION,
                         coutTotal DOUBLE PRECISION,
+                        surface INT,
                         etat EtatProjet,
                         client_id INT,
                         FOREIGN KEY (client_id) REFERENCES Client(id)
@@ -29,7 +30,7 @@ CREATE TABLE Composant (
 );
 
 -- Materiau inherits from BaseComposant
-CREATE TABLE Materiau (
+CREATE TABLE Material (
                           coutUnitaire DOUBLE PRECISION,
                           quantite DOUBLE PRECISION,
                           coutTransport DOUBLE PRECISION,

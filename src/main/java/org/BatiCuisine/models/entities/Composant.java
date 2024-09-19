@@ -10,7 +10,7 @@ public class Composant {
     private String typeComposant;
 
     private Projet projet;
-    private List<Materiau> materiaux;
+    private List<Material> materiaux;
     private List<MainOeuvre> mainDoeuvres;
 
     public Composant() {}
@@ -42,9 +42,9 @@ public class Composant {
 
     public void setProjet(Projet projet) { this.projet = projet; }
 
-    public List<Materiau> getMateriaux() { return materiaux; }
+    public List<Material> getMateriaux() { return materiaux; }
 
-    public void setMateriaux(List<Materiau> materiaux) { this.materiaux = materiaux; }
+    public void setMateriaux(List<Material> materiaux) { this.materiaux = materiaux; }
 
     public List<MainOeuvre> getMainDoeuvres() { return mainDoeuvres; }
 

@@ -1,6 +1,6 @@
 package org.BatiCuisine.models.entities;
 
-public class Materiau extends Composant{
+public class Material extends Composant{
 
 
     private double coutUnitaire;
@@ -10,9 +10,9 @@ public class Materiau extends Composant{
 
     private Composant composant;
 
-    public Materiau() {}
+    public Material() {}
 
-    public Materiau(double coutUnitaire, double quantite, double coutTransport, double coefficientQualite, String nom, double tauxTVA, String typeComposant, Projet projet) {
+    public Material(double coutUnitaire, double quantite, double coutTransport, double coefficientQualite, String nom, double tauxTVA, String typeComposant, Projet projet) {
         super(nom, tauxTVA, typeComposant, projet);
         this.coutUnitaire = coutUnitaire;
         this.quantite = quantite;
