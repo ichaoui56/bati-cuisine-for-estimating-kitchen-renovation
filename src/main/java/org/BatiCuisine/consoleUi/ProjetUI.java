@@ -16,11 +16,13 @@ public class ProjetUI {
     private final Scanner scanner = new Scanner(System.in);
     private ProjetService projetService;
     private final ComposantUI composantUI;
+    private final DevisUI devisUI;
 
 
-    public ProjetUI(ProjetService projetService, ComposantUI composantUI) {
+    public ProjetUI(ProjetService projetService, ComposantUI composantUI, DevisUI devisUI) {
         this.projetService = projetService;
         this.composantUI = composantUI;
+        this.devisUI = devisUI;
     }
 
     public void addProjet(Client client) throws SQLException {
@@ -57,7 +59,7 @@ public class ProjetUI {
         }
 
         System.out.println("\n");
-        System.out.print("||                            Voulez-vous ajouter la marge bénéficiaire? (oui/non) : ");
+        System.out.print("||                      Voulez-vous ajouter la marge bénéficiaire? (oui/non) : ");
         String addMargeResponse = scanner.nextLine().trim().toLowerCase();
 
         double margeBenef = 0.0;
@@ -74,6 +76,7 @@ public class ProjetUI {
         System.out.println("\n");
         System.out.println("\n");
         System.out.println("||                                  Calcul du coût en cours...                                  ||");
+
     }
 
 

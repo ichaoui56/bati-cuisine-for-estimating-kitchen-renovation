@@ -1,5 +1,6 @@
 package org.BatiCuisine.consoleUi;
 
+import org.BatiCuisine.models.entities.Devis;
 import org.BatiCuisine.repositories.Impl.ClientRepositoryImpl;
 import org.BatiCuisine.repositories.Impl.MainOeuvreRepositoryImpl;
 import org.BatiCuisine.repositories.Impl.MaterialRepositoryImpl;
@@ -32,7 +33,8 @@ public class MainUI {
         MainOeuvreRepository mainOeuvreRepository = new MainOeuvreRepositoryImpl();
         MainOeuvreService mainOeuvreService = new MainOeuvreServiceImpl(mainOeuvreRepository);
         ComposantUI composantUI = new ComposantUI(materialService, mainOeuvreService);
-        ProjetUI projetUI = new ProjetUI(projetService, composantUI);
+        DevisUI devisUI = new DevisUI();
+        ProjetUI projetUI = new ProjetUI(projetService, composantUI, devisUI);
         ClientUI clientUI = new ClientUI(clientService, projetUI);
         principalUI = new PrincipalUI(clientUI);
     }

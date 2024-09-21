@@ -45,7 +45,8 @@ public class PrincipalUI {
                     System.out.println("Affichage des projets existants...");
                     break;
                 case 3:
-                    System.out.println("Calcul du coût d'un projet...");
+                    DevisUI devisUI = new DevisUI();
+                    devisUI.displayDevis();
                     break;
                 case 4:
                     System.out.println("Quitter l'application...");
