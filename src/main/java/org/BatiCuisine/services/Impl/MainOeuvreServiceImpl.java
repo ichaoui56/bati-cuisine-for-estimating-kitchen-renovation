@@ -13,8 +13,12 @@ public class MainOeuvreServiceImpl implements MainOeuvreService {
         this.mainOeuvreRepository = mainOeuvre;
     }
 
-    public boolean ajouterMainOeuvre(MainOeuvre mainOeuvre) throws SQLException {
-        mainOeuvreRepository.addLabor(mainOeuvre);
+    public MainOeuvre ajouterMainOeuvre(MainOeuvre mainOeuvre) throws SQLException {
+        return mainOeuvreRepository.addLabor(mainOeuvre);
+    }
+
+    public boolean modifierMainOeuvreTva(int mainOeuvreId, double tva) throws SQLException {
+        mainOeuvreRepository.updateMainOeuvreTva(mainOeuvreId, tva);
         return true;
     }
 }

@@ -17,7 +17,7 @@ public class ClientRepositoryImpl implements ClientRepository {
         this.connection = DatabaseConnection.getInstance().getConnection();
     }
 
-    public int addClient(Client client) throws SQLException {
+    public Client addClient(Client client) throws SQLException {
         String query = "INSERT INTO client (nom, address, phone_number, est_professionnal) VALUES (?, ?, ?, ?) RETURNING id";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, client.getNom());
@@ -27,7 +27,9 @@ public class ClientRepositoryImpl implements ClientRepository {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt("id");
+                    int id = rs.getInt("id");
+                    client.setId(id);
+                    return client;
                 } else {
                     throw new SQLException("Inserting client failed, no ID returned.");
                 }

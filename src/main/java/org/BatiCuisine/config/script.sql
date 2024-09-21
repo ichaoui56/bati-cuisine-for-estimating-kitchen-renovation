@@ -13,7 +13,7 @@ CREATE TABLE Projet (
                         nomProjet VARCHAR(255),
                         margeBeneficiaire DOUBLE PRECISION,
                         coutTotal DOUBLE PRECISION,
-                        surface INT,
+                        surface DOUBLE PRECISION,
                         etat EtatProjet,
                         client_id INT,
                         FOREIGN KEY (client_id) REFERENCES Client(id)

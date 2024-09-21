@@ -8,22 +8,20 @@ public class Projet {
     private String nomProjet;
     private double margeBeneficiaire;
     private double coutTotal;
-    private int surface;
+    private double surface;
     private EtatProjet etat;
 
     private Client client;
-    private Devis devis;
 
     public Projet() {}
 
-    public Projet(String nomProjet, double margeBeneficiaire, double coutTotal, EtatProjet etat, Client client, Devis devis, int surface) {
+    public Projet(String nomProjet, double margeBeneficiaire, double coutTotal, EtatProjet etat, Client client, double surface) {
         this.nomProjet = nomProjet;
         this.margeBeneficiaire = margeBeneficiaire;
         this.coutTotal = coutTotal;
         this.surface = surface;
         this.etat = etat;
         this.client = client;
-        this.devis = devis;
     }
 
     public int getId() { return id; }
@@ -36,9 +34,9 @@ public class Projet {
 
     public double getMargeBeneficiaire() { return margeBeneficiaire; }
 
-    public int getSurface() { return surface; }
+    public double getSurface() { return surface; }
 
-    public void setSurface(int surface) { this.surface = surface; }
+    public void setSurface(double surface) { this.surface = surface; }
 
     public void setMargeBeneficiaire(double margeBeneficiaire) { this.margeBeneficiaire = margeBeneficiaire; }
 
@@ -54,10 +52,6 @@ public class Projet {
 
     public void setClient(Client client) { this.client = client; }
 
-    public Devis getDevis() { return devis; }
-
-    public void setDevis(Devis devis) { this.devis = devis; }
-
     @Override
     public String toString() {
         return "Projet{" +
@@ -67,7 +61,7 @@ public class Projet {
                 ", coutTotal=" + coutTotal +
                 ", etat=" + etat +
                 ", client=" + client +
-                ", devis=" + devis +
+                ", surface=" + surface +
                 '}';
     }
 }

@@ -13,7 +13,7 @@ public class ClientServiceImpl implements ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public int ajouterClient(Client client) throws SQLException {
+    public Client ajouterClient(Client client) throws SQLException {
        return clientRepository.addClient(client);
     }
 }

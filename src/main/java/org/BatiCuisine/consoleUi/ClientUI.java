@@ -76,18 +76,17 @@ public class ClientUI {
 
 
         Client client = new Client(nom, address, phoneNumber, estProfessionnal);
-        int clientId = clientService.ajouterClient(client);
+        Client createdClient = clientService.ajouterClient(client);
 
-        if (clientId > 0) {
+        if (createdClient.getId() > 0) {
             System.out.println("\n");
             System.out.println("                                       Client ajouté avec succès !");
             System.out.println("\n");
-            projetUI.addProjet(clientId);
+            projetUI.addProjet(createdClient);
 
         } else {
             System.out.println("                                      Échec de l'ajout du client.");
         }
-
 
     }
 
