@@ -5,5 +5,6 @@ import org.BatiCuisine.models.entities.Material;
 import java.sql.SQLException;
 
 public interface MaterialRepository {
-    void addMaterial(Material material) throws SQLException;
+    Material addMaterial(Material material) throws SQLException;
+    void updateMaterialTva(int materialId, double tva) throws SQLException;
 }

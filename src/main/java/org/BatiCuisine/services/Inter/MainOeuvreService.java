@@ -5,5 +5,6 @@ import org.BatiCuisine.models.entities.MainOeuvre;
 import java.sql.SQLException;
 
 public interface MainOeuvreService {
-    boolean ajouterMainOeuvre(MainOeuvre mainOeuvre) throws SQLException;
+    MainOeuvre ajouterMainOeuvre(MainOeuvre mainOeuvre) throws SQLException;
+    boolean modifierMainOeuvreTva(int mainOeuvreId, double tva) throws SQLException;
 }
