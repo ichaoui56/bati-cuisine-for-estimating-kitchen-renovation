@@ -1,57 +1,69 @@
 package org.BatiCuisine.models.entities;
 
-import java.util.List;
+import java.time.LocalDate;
 
 public class Devis {
-
     private int id;
-    private double montantHT;
-    private double montantTTC;
-
+    private double montantEstime;
+    private LocalDate dateEmission;
+    private LocalDate dateValidite;
+    private boolean accepte;
     private Projet projet;
-    private List<Material> materiaux;
-    private List<MainOeuvre> mainDoeuvres;
 
-    public Devis() {}
-
-    public Devis(double montantHT, double montantTTC, Projet projet) {
-        this.montantHT = montantHT;
-        this.montantTTC = montantTTC;
+    public Devis(double montantEstime, LocalDate dateEmission, LocalDate dateValidite, boolean accepte, Projet projet) {
+        this.montantEstime = montantEstime;
+        this.dateEmission = dateEmission;
+        this.dateValidite = dateValidite;
+        this.accepte = accepte;
         this.projet = projet;
     }
 
-    public int getId() { return id; }
 
-    public void setId(int id) { this.id = id; }
+    public int getId() {
+        return id;
+    }
 
-    public double getMontantHT() { return montantHT; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public void setMontantHT(double montantHT) { this.montantHT = montantHT; }
+    public double getMontantEstime() {
+        return montantEstime;
+    }
 
-    public double getMontantTTC() { return montantTTC; }
+    public void setMontantEstime(double montantEstime) {
+        this.montantEstime = montantEstime;
+    }
 
-    public void setMontantTTC(double montantTTC) { this.montantTTC = montantTTC; }
+    public LocalDate getDateEmission() {
+        return dateEmission;
+    }
 
-    public Projet getProjet() { return projet; }
+    public void setDateEmission(LocalDate dateEmission) {
+        this.dateEmission = dateEmission;
+    }
 
-    public void setProjet(Projet projet) { this.projet = projet; }
+    public LocalDate getDateValidite() {
+        return dateValidite;
+    }
 
-    public List<Material> getMateriaux() { return materiaux; }
+    public void setDateValidite(LocalDate dateValidite) {
+        this.dateValidite = dateValidite;
+    }
 
-    public void setMateriaux(List<Material> materiaux) { this.materiaux = materiaux; }
+    public boolean isAccepte() {
+        return accepte;
+    }
 
-    public List<MainOeuvre> getMainDoeuvres() { return mainDoeuvres; }
+    public void setAccepte(boolean accepte) {
+        this.accepte = accepte;
+    }
 
-    public void setMainDoeuvres(List<MainOeuvre> mainDoeuvres) { this.mainDoeuvres = mainDoeuvres; }
+    public Projet getProjet() {
+        return projet;
+    }
 
-    @Override
-    public String toString() {
-        return "Devis{" +
-                "id=" + id +
-                ", montantHT=" + montantHT +
-                ", montantTTC=" + montantTTC +
-                ", projet=" + projet +
-                '}';
+    public void setProjet(Projet projet) {
+        this.projet = projet;
     }
 }
-
