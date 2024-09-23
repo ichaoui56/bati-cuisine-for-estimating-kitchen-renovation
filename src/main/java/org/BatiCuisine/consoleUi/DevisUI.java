@@ -109,6 +109,20 @@ public class DevisUI {
         System.out.println("**======================================================================================================**");
         System.out.println("\n");
 
+        System.out.print("Souhaitez-vous enregistrer le devis ? (youi/non) : ");
+        String approve = scanner.nextLine().trim();
+
+        if (approve.equalsIgnoreCase("oui")) {
+            Devis devis = new Devis(finalTotal, dateEmission, dateValidation, true, projet);
+            if (devisService.ajouterDevis(devis)) {
+                System.out.println("                                Devis enregistré avec succès !");
+            } else {
+                System.out.println("                            Échec de l'enregistrement du devis.");
+            }
+        } else {
+            System.out.println("                                   Enregistrement du devis annulé.");
+        }
+
     }
 
 
