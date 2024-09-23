@@ -15,10 +15,10 @@ public class PrincipalUI {
 
     public void displayMenu() throws SQLException {
         int choix = 0;
-
+        System.out.println("\n\n");
+        System.out.println(applicationTitle());
         do {
-            System.out.println("\n\n");
-            System.out.println("**===============================|(    📃   Menu Principal   📃    )|================================**");
+            System.out.println("**===============================|(    \u001B[36m📃   Menu Principal   📃\u001B[0m    )|================================**");
             System.out.println("||                                                                                                    ||");
             System.out.println("||                                   1. Créer un nouveau projet                                       ||");
             System.out.println("||                                   2. Afficher les projets existants                                ||");
@@ -28,7 +28,6 @@ public class PrincipalUI {
             System.out.println("**====================================================================================================**");
             System.out.print("                                         Entrez votre choix : ");
 
-            // Read and validate menu choice
             String input = scanner.nextLine().trim();
             try {
                 choix = Integer.parseInt(input);
@@ -45,8 +44,7 @@ public class PrincipalUI {
                     System.out.println("Affichage des projets existants...");
                     break;
                 case 3:
-                    DevisUI devisUI = new DevisUI();
-                    devisUI.displayDevis();
+                    System.out.println("Affichage  projets existants...");
                     break;
                 case 4:
                     System.out.println("Quitter l'application...");
@@ -56,6 +54,18 @@ public class PrincipalUI {
             }
 
         } while (choix != 4);
+    }
+
+
+    private String applicationTitle() {
+        return "\u001B[32m" +
+                "            ██████╗  █████╗ ████████╗██╗       ██████╗██╗   ██╗██╗███████╗██╗███╗   ██╗███████╗\n" +
+                "            ██╔══██╗██╔══██╗╚══██╔══╝██║      ██╔════╝██║   ██║██║██╔════╝██║████╗  ██║██╔════╝\n" +
+                "            ██████╔╝███████║   ██║   ██║█████╗██║     ██║   ██║██║███████╗██║██╔██╗ ██║█████╗  \n" +
+                "            ██╔══██╗██╔══██║   ██║   ██║╚════╝██║     ██║   ██║██║╚════██║██║██║╚██╗██║██╔══╝  \n" +
+                "            ██████╔╝██║  ██║   ██║   ██║      ╚██████╗╚██████╔╝██║███████║██║██║ ╚████║███████╗\n" +
+                "            ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝       ╚═════╝ ╚═════╝ ╚═╝╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝\n" +
+                "\u001B[0m";
     }
 
 

@@ -25,12 +25,12 @@ public class ComposantUI {
         this.mainOeuvreService = mainOeuvreService;
     }
 
-    public void addMaterial(Projet projet) throws SQLException {
+    public void addMaterial(Projet projet, Client client, ProjetUI projetUI) throws SQLException {
         boolean addMoreMaterials = true;
 
         while (addMoreMaterials) {
             System.out.println("\n");
-            System.out.println("**=================================|(    🧱   Add Material   🧱    )|=================================**");
+            System.out.println("**===============================|(   \u001B[36m🧱   Ajouter Material   🧱\u001B[0m   )|=================================**");
             System.out.println("||                                                                                                     ||");
             System.out.print("||                                       Entrez le nom du matériau : ");
             String nomMateriel = scanner.nextLine().trim();
@@ -43,7 +43,7 @@ public class ComposantUI {
             System.out.print("||         Entrez le coefficient de qualité du matériau (1.0 = standard, > 1.0 = haute qualité) : ");
             double coeffQualite = Double.parseDouble(scanner.nextLine().trim());
             System.out.println("||                                                                                                     ||");
-            System.out.println("**====================================================================================================**");
+            System.out.println("**======================================================================================================**");
             System.out.println("\n");
 
             Material material = new Material(coutUnitaire, quantite, coutTransport, coeffQualite, nomMateriel, 0.0, "Matériel", projet);
@@ -51,10 +51,10 @@ public class ComposantUI {
             addedMaterials.put(materialObj.getId(), materialObj);
 
             if (materialObj.getId() > 0) {
-                System.out.println("                                      Matériau ajouté avec succès !");
+                System.out.println("                                     \u001B[32m ✅Matériau ajouté avec succès✅ \u001B[0m ");
                 System.out.println("\n");
             } else {
-                System.out.println("                                      Matériau n'a pas été ajouter !");
+                System.out.println("                                      ❌Matériau n'a pas été ajouter❌");
                 System.out.println("\n");
             }
 
@@ -63,17 +63,18 @@ public class ComposantUI {
 
             if (!response.equals("oui")) {
                 addMoreMaterials = false;
+                addLabor(client, projet, addedMaterials, projetUI);
             }
         }
     }
 
-    public void addLabor(Projet projet) throws SQLException {
+    public void addLabor(Client client, Projet projet, HashMap<Integer, Material> material, ProjetUI projetUI) throws SQLException {
         boolean addMoreLabors = true;
 
         while (addMoreLabors) {
             System.out.println("\n");
-            System.out.println("**================================|(    👷   Add Labor   👷    )|================================**");
-            System.out.println("||                                                                                                 ||");
+            System.out.println("**================================|(    \u001B[36m👷   Ajouter MainOeuvre   👷\u001B[0m    )|===========================**");
+            System.out.println("||                                                                                                   ||");
             System.out.print("||               Entrez le type de main-d'œuvre (e.g., Ouvrier de base, Spécialiste) : ");
             String typeMainDoeuvre = scanner.nextLine().trim();
             System.out.print("||                        Entrez le taux horaire de cette main-d'œuvre (€/h) : ");
@@ -82,8 +83,8 @@ public class ComposantUI {
             double heuresTravaillees = Double.parseDouble(scanner.nextLine().trim());
             System.out.print("||           Entrez le facteur de productivité (1.0 = standard, > 1.0 = haute productivité) : ");
             double facteurProductivite = Double.parseDouble(scanner.nextLine().trim());
-            System.out.println("||                                                                                                 ||");
-            System.out.println("**================================================================================================**");
+            System.out.println("||                                                                                                   ||");
+            System.out.println("**===================================================================================================**");
             System.out.println("\n");
 
             MainOeuvre mainOeuvre = new MainOeuvre(typeMainDoeuvre, 0, "Main-d'œuvre", projet, tauxHoraire, heuresTravaillees, facteurProductivite);
@@ -91,10 +92,10 @@ public class ComposantUI {
             addedLabors.put(mainOeuvre.getId(), mainOeuvre);
 
             if (mainOeuvreObj.getId() > 0) {
-                System.out.println("                                   Main-d'œuvre ajoutée avec succès !");
+                System.out.println("                                   ✅\u001B[32m Main-d'œuvre ajoutée avec succès✅ \u001B[0m ");
                 System.out.println("\n");
             } else {
-                System.out.println("                                   Main-d'œuvre n'a pas été ajouter !");
+                System.out.println("                                   ❌Main-d'œuvre n'a pas été ajouter❌");
                 System.out.println("\n");
             }
 
@@ -105,6 +106,7 @@ public class ComposantUI {
 
             if (!response.equals("oui")) {
                 addMoreLabors = false;
+                projetUI.finalizeProjet(client,projet,material,addedLabors);
             }
         }
     }
