@@ -1,19 +1,24 @@
 package org.BatiCuisine.consoleUi;
 
-import org.BatiCuisine.models.entities.Client;
-import org.BatiCuisine.models.entities.MainOeuvre;
-import org.BatiCuisine.models.entities.Material;
-import org.BatiCuisine.models.entities.Projet;
+import org.BatiCuisine.models.entities.*;
+import org.BatiCuisine.services.Inter.DevisService;
 import org.BatiCuisine.utils.DevisCalculation;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class DevisUI {
-
+    private final DevisService devisService;
     private static final String COLOR_96C9F4 = "\u001B[38;5;75m";
     private static final String COLOR_E7F0DC = "\u001B[38;5;146m";
     private static final String RESET_COLOR = "\u001B[0m";
+    private final Scanner scanner = new Scanner(System.in);
+    public DevisUI(DevisService devisService) {
+        this.devisService = devisService;
+    }
 
     public void displayDevis(Client client, Projet projet, HashMap<Integer, Material> materials, HashMap<Integer, MainOeuvre> labor, double margeRate, double tvaRate) {
         DevisCalculation calcul = new DevisCalculation();
@@ -67,7 +72,46 @@ public class DevisUI {
         System.out.println("       ||                                                                                            ||");
         System.out.println("       ************************************************************************************************" + RESET_COLOR);
         System.out.println("\n");
+
+        saveDevis(finalTotal, projet);
     }
+
+    public void saveDevis(double finalTotal, Projet projet) {
+        System.out.println("\n");
+        System.out.println("**===============================|(   \u001B[36m🧱   Enregistrer Devis   🧱\u001B[0m   )|=================================**");
+        System.out.println("||                                                                                                     ||");
+
+        LocalDate dateEmission = null;
+        LocalDate dateValidation = null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        while (dateEmission == null) {
+            System.out.print("||                        Entrez la date d'émission du devis (format : jj/mm/aaaa) : ");
+            String dateInput = scanner.nextLine().trim();
+            System.out.println("||                                                                                                     ||");
+            try {
+                dateEmission = LocalDate.parse(dateInput, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("Date invalide, veuillez réessayer.");
+            }
+        }
+
+        while (dateValidation == null) {
+            System.out.print("||                        Entrez la date de validité du devis (format : jj/mm/aaaa) : ");
+            String dateInput = scanner.nextLine().trim();
+            try {
+                dateValidation = LocalDate.parse(dateInput, formatter);
+            } catch (DateTimeParseException e) {
+                System.out.println("||                            Date invalide, veuillez réessayer.                                ||");
+            }
+        }
+
+        System.out.println("**======================================================================================================**");
+        System.out.println("\n");
+
+    }
+
+
 
     private void displayMaterialDetails(HashMap<Integer, Material> materials) {
         materials.values().forEach(material -> {
