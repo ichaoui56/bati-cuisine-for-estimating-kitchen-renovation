@@ -21,7 +21,7 @@ public class ClientUI {
     
         do {
             System.out.println("\n");
-            System.out.println("**=================================|(    📃   Menu Client   📃    )|=================================**");
+            System.out.println("**=================================|(    \u001B[32m📃   Menu client   📃\u001B[0m    )|=================================**");
             System.out.println("||                                                                                                    ||");
             System.out.println("||                                    1. Chercher un client existant                                  ||");
             System.out.println("||                                    2. Ajouter un nouveau client                                    ||");
@@ -57,8 +57,8 @@ public class ClientUI {
     }
 
     public void addNewClient() throws SQLException {
-        System.out.println("**=================================|(    📃   Add Client   📃    )|=================================**");
-        System.out.println("||                                                                                                   ||");
+        System.out.println("**===================================|(    \u001B[32m📃   Add Client   📃\u001B[0m    )|=================================**");
+        System.out.println("||                                                                                                     ||");
         System.out.print("||                                       Entrez le nom du client :");
         String nom = scanner.nextLine().trim();
 
@@ -80,12 +80,12 @@ public class ClientUI {
 
         if (createdClient.getId() > 0) {
             System.out.println("\n");
-            System.out.println("                                       Client ajouté avec succès !");
+            System.out.println("                                     \u001B[32m ✅Client ajouté avec succès ✅\u001B[0m ");
             System.out.println("\n");
             projetUI.addProjet(createdClient);
 
         } else {
-            System.out.println("                                      Échec de l'ajout du client.");
+            System.out.println("                                      ❌Échec de l'ajout du client❌");
         }
 
     }
