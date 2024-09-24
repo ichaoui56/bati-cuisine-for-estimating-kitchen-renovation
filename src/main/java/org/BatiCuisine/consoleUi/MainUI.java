@@ -5,6 +5,7 @@ import org.BatiCuisine.repositories.Impl.*;
 import org.BatiCuisine.repositories.Inter.*;
 import org.BatiCuisine.services.Impl.*;
 import org.BatiCuisine.services.Inter.*;
+import org.BatiCuisine.utils.ValidatorUtils;
 
 import java.sql.SQLException;
 
@@ -12,6 +13,7 @@ public class MainUI {
     private final PrincipalUI principalUI;
 
     public MainUI() throws SQLException {
+
         ClientRepository clientRepository = new ClientRepositoryImpl();
         ClientService clientService = new ClientServiceImpl(clientRepository);
 

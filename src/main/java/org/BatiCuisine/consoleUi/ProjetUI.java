@@ -6,6 +6,7 @@ import org.BatiCuisine.services.Inter.DevisService;
 import org.BatiCuisine.services.Inter.MainOeuvreService;
 import org.BatiCuisine.services.Inter.MaterialService;
 import org.BatiCuisine.services.Inter.ProjetService;
+import org.BatiCuisine.utils.ValidatorUtils;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -20,7 +21,6 @@ public class ProjetUI {
     private final ComposantUI composantUI;
     private final DevisUI devisUI;
 
-
     public ProjetUI(ProjetService projetService, ComposantUI composantUI, DevisUI devisUI, DevisService devisService) {
         this.projetService = projetService;
         this.composantUI = composantUI;
@@ -31,10 +31,10 @@ public class ProjetUI {
     public void addProjet(Client client) throws SQLException {
         System.out.println("**===================================|(    \u001B[36m📃   Add Projet   📃\u001B[0m    )|=================================**");
         System.out.println("||                                                                                                     ||");
-        System.out.print("||                                       Entrez le nom du projet :");
-        String nom = scanner.nextLine().trim();
-        System.out.print("||                               Entrez la surface de la cuisine (en m²) : ");
-        double surface = Double.parseDouble(scanner.nextLine().trim());
+
+        String nom = ValidatorUtils.validString("||                                       Entrez le nom du projet :");
+        double surface = ValidatorUtils.validDouble("||                               Entrez la surface de la cuisine (en m²) : ");
+
         System.out.println("||                                                                                                     ||");
         System.out.println("**====================================================================================================**");
         System.out.println("\n");
@@ -45,29 +45,23 @@ public class ProjetUI {
         composantUI.addMaterial(createdProjet, client, this);
     }
 
-    public void finalizeProjet(Client client, Projet projet, HashMap<Integer, Material> material,  HashMap<Integer, MainOeuvre> mainOeuvre) throws SQLException {
+    public void finalizeProjet(Client client, Projet projet, HashMap<Integer, Material> material, HashMap<Integer, MainOeuvre> mainOeuvre) throws SQLException {
         System.out.println("**===========================|(       \u001B[36m🔚   Calcul du coût total   🔚\u001B[0m       )|===========================**");
         System.out.println("||                                                                                                     ||");
-        System.out.print("||                            Voulez-vous ajouter la TVA? (oui/non) : ");
-        String addTvaResponse = scanner.nextLine().trim().toLowerCase();
 
+        boolean addTva = ValidatorUtils.validBoolean("||                            Voulez-vous ajouter la TVA? (oui/non) : ");
         double tva = 0.0;
-        if (addTvaResponse.equals("oui")) {
-            System.out.println("||                                                                                                     ||");
-            System.out.print("||                   Entrez le pourcentage de TVA (ex. 20 pour 20%) : ");
-            tva = Double.parseDouble(scanner.nextLine().trim()) / 100.0;
+        if (addTva) {
+            tva = ValidatorUtils.validDouble("||                   Entrez le pourcentage de TVA (ex. 20 pour 20%) : ") / 100.0;
         }
 
         System.out.println("||                                                                                                     ||");
-        System.out.print("||                      Voulez-vous ajouter la marge bénéficiaire? (oui/non) : ");
-        String addMargeResponse = scanner.nextLine().trim().toLowerCase();
-
+        boolean addMarge = ValidatorUtils.validBoolean("||                      Voulez-vous ajouter la marge bénéficiaire? (oui/non) : ");
         double margeBenef = 0.0;
-        if (addMargeResponse.equals("oui")) {
-            System.out.println("||                                                                                                     ||");
-            System.out.print("||                Entrez le pourcentage de marge bénéficiaire (ex. 15 pour 15%) : ");
-            margeBenef = Double.parseDouble(scanner.nextLine().trim()) / 100.0;
+        if (addMarge) {
+            margeBenef = ValidatorUtils.validDouble("||                Entrez le pourcentage de marge bénéficiaire (ex. 15 pour 15%) : ") / 100.0;
         }
+
         System.out.println("||                                                                                                     ||");
         System.out.println("**====================================================================================================**");
 
@@ -78,10 +72,9 @@ public class ProjetUI {
         System.out.println("||                                    ⌛ Calcul du coût en cours... ⏳                                  ||");
 
         devisUI.displayDevis(client, projet, material, mainOeuvre, margeBenef, tva);
-
     }
 
-    public void displayAllProjects(){
+    public void displayAllProjects() {
         System.out.println("\n\n");
         System.out.println("**===============================|(    \u001B[36m📂   Liste des Projets   📂\u001B[0m    )|===============================**");
         System.out.println("\n");
@@ -153,12 +146,10 @@ public class ProjetUI {
     }
 
     public void searchProjet() throws SQLException {
-
         boolean continueSearching;
         do {
             continueSearching = false;
-            System.out.print("                                  Entrez le nom du projet à chercher : ");
-            String name = scanner.nextLine().trim();
+            String name = ValidatorUtils.validString("                                  Entrez le nom du projet à chercher : ");
 
             Map<Integer, Projet> projets = projetService.searchProjetByName(name);
 
@@ -171,9 +162,8 @@ public class ProjetUI {
                 Projet projet = projets.values().iterator().next();
                 displayProjetDetails(projet);
 
-                System.out.print("                            Souhaitez-vous continuer avec ce projet ? (oui/non) : ");
-                String response = scanner.nextLine().trim().toLowerCase();
-                if (response.equals("oui")) {
+                boolean continueWithProject = ValidatorUtils.validBoolean("                            Souhaitez-vous continuer avec ce projet ? (oui/non) : ");
+                if (continueWithProject) {
                     displayProjectCostEstimate(projet);
                 } else {
                     continueSearching = true;
@@ -213,6 +203,7 @@ public class ProjetUI {
         System.out.println("        ||                                                                                       ||");
         System.out.println("        **=======================================================================================**");
     }
+
 
     private void displayProjetSuggestions(Map<Integer, Projet> projets) {
         System.out.println("\n");

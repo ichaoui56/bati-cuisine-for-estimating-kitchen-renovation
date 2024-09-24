@@ -4,11 +4,11 @@ import org.BatiCuisine.models.entities.*;
 import org.BatiCuisine.services.Inter.DevisService;
 import org.BatiCuisine.services.Inter.ProjetService;
 import org.BatiCuisine.utils.DevisCalculation;
+import org.BatiCuisine.utils.ValidatorUtils;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -18,7 +18,6 @@ public class DevisUI {
     private static final String COLOR_E7F0DC = "\u001B[38;5;146m";
     private static final String RESET_COLOR = "\u001B[0m";
     private final ProjetService projetService;
-    private final Scanner scanner = new Scanner(System.in);
 
     public DevisUI(DevisService devisService, ProjetService projetService) {
         this.devisService = devisService;
@@ -87,38 +86,19 @@ public class DevisUI {
         System.out.println("**===============================|(   \u001B[36m🧱   Enregistrer Devis   🧱\u001B[0m   )|=================================**");
         System.out.println("||                                                                                                     ||");
 
-        LocalDate dateEmission = null;
-        LocalDate dateValidation = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateEmission = ValidatorUtils.validDate("||                        Entrez la date d'émission du devis (format : jj/mm/aaaa) : ");
+        LocalDate dateValidation = ValidatorUtils.validDate("||                        Entrez la date de validité du devis (format : jj/mm/aaaa) : ");
 
-        while (dateEmission == null) {
-            System.out.print("||                        Entrez la date d'émission du devis (format : jj/mm/aaaa) : ");
-            String dateInput = scanner.nextLine().trim();
-            System.out.println("||                                                                                                     ||");
-            try {
-                dateEmission = LocalDate.parse(dateInput, formatter);
-            } catch (DateTimeParseException e) {
-                System.out.println("Date invalide, veuillez réessayer.");
-            }
+        while (dateValidation.isBefore(dateEmission)) {
+            System.out.println("                      " + ValidatorUtils.RED + ValidatorUtils.ERROR_EMOJI + " Erreur : la date de validité doit être postérieure à la date d'émission." + ValidatorUtils.RESET);
+            dateValidation = ValidatorUtils.validDate("||                        Entrez la date de validité du devis (format : jj/mm/aaaa) : ");
         }
-
-        while (dateValidation == null) {
-            System.out.print("||                        Entrez la date de validité du devis (format : jj/mm/aaaa) : ");
-            String dateInput = scanner.nextLine().trim();
-            try {
-                dateValidation = LocalDate.parse(dateInput, formatter);
-            } catch (DateTimeParseException e) {
-                System.out.println("||                            Date invalide, veuillez réessayer.                                ||");
-            }
-        }
-
         System.out.println("**======================================================================================================**");
         System.out.println("\n");
 
-        System.out.print("Souhaitez-vous enregistrer le devis ? (oui/non) : ");
-        String approve = scanner.nextLine().trim();
-
-        if (approve.equalsIgnoreCase("oui")) {
+        boolean approve = ValidatorUtils.validBoolean("                              Souhaitez-vous enregistrer le devis ? (oui/non) : ");
+        System.out.println("\n");
+        if (approve) {
             Devis devis = new Devis(finalTotal, dateEmission, dateValidation, true, projet);
             if (devisService.ajouterDevis(devis)) {
                 System.out.println("                                Devis enregistré avec succès !");
@@ -128,10 +108,7 @@ public class DevisUI {
         } else {
             System.out.println("                                   Enregistrement du devis annulé.");
         }
-
     }
-
-
 
     private void displayMaterialDetails(HashMap<Integer, Material> materials) {
         materials.values().forEach(material -> {
