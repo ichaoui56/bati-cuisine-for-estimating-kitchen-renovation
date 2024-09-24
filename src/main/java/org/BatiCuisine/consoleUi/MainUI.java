@@ -15,7 +15,7 @@ public class MainUI {
         ClientRepository clientRepository = new ClientRepositoryImpl();
         ClientService clientService = new ClientServiceImpl(clientRepository);
 
-        ProjetRepository projetRepository = new ProjetRepositoryImpl();
+        ProjetRepository projetRepository = new ProjetRepositoryImpl(clientRepository);
         ProjetService projetService = new ProjetServiceImpl(projetRepository);
 
         MaterialRepository materialRepository = new MaterialRepositoryImpl();
@@ -28,10 +28,10 @@ public class MainUI {
         DevisService devisService = new DevisServiceImpl(devisRepository);
 
         ComposantUI composantUI = new ComposantUI(materialService, mainOeuvreService);
-        DevisUI devisUI = new DevisUI(devisService);
+        DevisUI devisUI = new DevisUI(devisService, projetService);
         ProjetUI projetUI = new ProjetUI(projetService, composantUI, devisUI);
         ClientUI clientUI = new ClientUI(clientService, projetUI);
-        principalUI = new PrincipalUI(clientUI);
+        principalUI = new PrincipalUI(clientUI,projetUI);
     }
 
     public void run() throws SQLException {

@@ -2,8 +2,10 @@ package org.BatiCuisine.consoleUi;
 
 import org.BatiCuisine.models.entities.*;
 import org.BatiCuisine.services.Inter.DevisService;
+import org.BatiCuisine.services.Inter.ProjetService;
 import org.BatiCuisine.utils.DevisCalculation;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,12 +17,15 @@ public class DevisUI {
     private static final String COLOR_96C9F4 = "\u001B[38;5;75m";
     private static final String COLOR_E7F0DC = "\u001B[38;5;146m";
     private static final String RESET_COLOR = "\u001B[0m";
+    private final ProjetService projetService;
     private final Scanner scanner = new Scanner(System.in);
-    public DevisUI(DevisService devisService) {
+
+    public DevisUI(DevisService devisService, ProjetService projetService) {
         this.devisService = devisService;
+        this.projetService = projetService;
     }
 
-    public void displayDevis(Client client, Projet projet, HashMap<Integer, Material> materials, HashMap<Integer, MainOeuvre> labor, double margeRate, double tvaRate) {
+    public void displayDevis(Client client, Projet projet, HashMap<Integer, Material> materials, HashMap<Integer, MainOeuvre> labor, double margeRate, double tvaRate) throws SQLException {
         DevisCalculation calcul = new DevisCalculation();
 
         double totalMaterialCostBeforeTVA = calcul.calculateTotalMaterialCostBeforeTVA(materials);
@@ -73,6 +78,7 @@ public class DevisUI {
         System.out.println("       ************************************************************************************************" + RESET_COLOR);
         System.out.println("\n");
 
+        projetService.modifierMargeBenef(projet.getId(), margeRate, finalTotal);
         saveDevis(finalTotal, projet);
     }
 
@@ -109,7 +115,7 @@ public class DevisUI {
         System.out.println("**======================================================================================================**");
         System.out.println("\n");
 
-        System.out.print("Souhaitez-vous enregistrer le devis ? (youi/non) : ");
+        System.out.print("Souhaitez-vous enregistrer le devis ? (oui/non) : ");
         String approve = scanner.nextLine().trim();
 
         if (approve.equalsIgnoreCase("oui")) {

@@ -6,4 +6,5 @@ import java.sql.SQLException;
 
 public interface ClientRepository {
     Client addClient(Client client) throws SQLException;
+    Client getClientById(int id) throws SQLException;
 }
