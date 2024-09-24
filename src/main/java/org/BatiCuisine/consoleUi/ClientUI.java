@@ -2,6 +2,7 @@ package org.BatiCuisine.consoleUi;
 
 import org.BatiCuisine.models.entities.Client;
 import org.BatiCuisine.services.Inter.ClientService;
+import org.BatiCuisine.utils.ValidatorUtils;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class ClientUI {
                 choix = Integer.parseInt(input);
             } catch (NumberFormatException e) {
                 System.out.println("                                 Choix invalide. Veuillez réessayer.");
-                continue;
+                continue; // Prompt is displayed again
             }
 
             switch (choix) {
@@ -51,7 +52,7 @@ public class ClientUI {
                     principalUI.displayMenu();
                     break;
                 default:
-                    System.out.println("Choix invalide. Veuillez réessayer.");
+                    System.out.println("Choix invalide. Veuillez réessayer."); // Display prompt again
             }
         } while (choix != 3);
     }
@@ -59,17 +60,12 @@ public class ClientUI {
     public void addNewClient() throws SQLException {
         System.out.println("**===================================|(    \u001B[32m📃   Add Client   📃\u001B[0m    )|=================================**");
         System.out.println("||                                                                                                     ||");
-        System.out.print("||                                       Entrez le nom du client :");
-        String nom = scanner.nextLine().trim();
 
-        System.out.print("||                                       Entrez l'adresse du client :");
-        String address = scanner.nextLine().trim();
+        String nom = ValidatorUtils.validName("||                                       Entrez le nom du client : ");
+        String address = ValidatorUtils.validString("||                                       Entrez l'adresse du client : ");
+        String phoneNumber = ValidatorUtils.validPN("||                                  Entrez le numéro de téléphone du client : ");
+        boolean estProfessionnal = ValidatorUtils.validBoolean("||                               Le client est-il professionnel (oui/non) : ");
 
-        System.out.print("||                                  Entrez le numéro de téléphone du client :");
-        String phoneNumber = scanner.nextLine().trim();
-
-        System.out.print("||                               Le client est-il professionnel (true/false) : ");
-        boolean estProfessionnal = Boolean.parseBoolean(scanner.nextLine().trim());
         System.out.println("**====================================================================================================**");
 
         Client client = new Client(nom, address, phoneNumber, estProfessionnal);
@@ -90,9 +86,7 @@ public class ClientUI {
 
         do {
             continueSearching = false;
-            System.out.print("                                  Entrez le nom du client à chercher : ");
-            String name = scanner.nextLine().trim();
-
+            String name = ValidatorUtils.validString("||                                       Entrez le nom du client à chercher : ");
             Map<Integer, Client> clients = clientService.searchClientByName(name);
 
             if (clients.isEmpty()) {
@@ -116,12 +110,11 @@ public class ClientUI {
                 if (response.equals("oui")) {
                     projetUI.addProjet(client);
                 } else {
-                    continueSearching = true;
+                    continueSearching = true; // Continue searching for another client
                 }
             }
         } while (continueSearching);
     }
-
 
     private void selectClient(Map<Integer, Client> clients) throws SQLException {
         System.out.print("                  Veuillez entrer l'ID du client pour continuer à ajouter un projet : ");
@@ -134,11 +127,11 @@ public class ClientUI {
                 projetUI.addProjet(selectedClient);
             } else {
                 System.out.println("                                ID de client invalide. Veuillez réessayer.");
+                selectClient(clients); // Re-prompt for client ID
             }
         } catch (NumberFormatException e) {
             System.out.println("                                        Veuillez entrer un ID valide.");
+            selectClient(clients); // Re-prompt for client ID
         }
     }
-
-
 }
