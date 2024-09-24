@@ -76,7 +76,24 @@ public class ProjetRepositoryImpl implements ProjetRepository {
         return Optional.empty();
     }
 
-    public Projet mapResultSetToProject(ResultSet rs) throws Exception {
+    public Map<Integer, Projet> searchProjetByName(String name) throws SQLException {
+        Map<Integer, Projet> matchingProjets = new HashMap<>();
+        String sql = "SELECT * FROM projet WHERE nom_projet ILIKE ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + name + "%");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Projet projet = mapResultSetToProject(resultSet);
+                    matchingProjets.put(projet.getId(), projet);
+                }
+            }
+        }
+        return matchingProjets;
+    }
+
+
+    public Projet mapResultSetToProject(ResultSet rs) throws SQLException {
         int clientId = rs.getInt("client_id");
         Client client = clientRepository.getClientById(clientId);
 

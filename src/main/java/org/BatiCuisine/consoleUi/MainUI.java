@@ -29,7 +29,7 @@ public class MainUI {
 
         ComposantUI composantUI = new ComposantUI(materialService, mainOeuvreService);
         DevisUI devisUI = new DevisUI(devisService, projetService);
-        ProjetUI projetUI = new ProjetUI(projetService, composantUI, devisUI);
+        ProjetUI projetUI = new ProjetUI(projetService, composantUI, devisUI, devisService);
         ClientUI clientUI = new ClientUI(clientService, projetUI);
         principalUI = new PrincipalUI(clientUI,projetUI);
     }

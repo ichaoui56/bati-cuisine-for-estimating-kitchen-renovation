@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 public class DatabaseConnection {
 
     private static DatabaseConnection instance;
@@ -15,10 +14,11 @@ public class DatabaseConnection {
 
     private DatabaseConnection() throws SQLException {
         try {
-            Class.forName("org.postgresql.Driver");
             this.connection = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Database Connection Creation Failed : " + ex.getMessage());
+            System.out.println("Database connection established.");
+        } catch (SQLException ex) {
+            System.out.println("Database Connection Creation Failed: " + ex.getMessage());
+            throw new SQLException(ex);
         }
     }
 

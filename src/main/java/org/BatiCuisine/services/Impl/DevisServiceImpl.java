@@ -5,6 +5,8 @@ import org.BatiCuisine.repositories.Inter.DevisRepository;
 import org.BatiCuisine.services.Inter.DevisService;
 
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.Optional;
 
 public class DevisServiceImpl implements DevisService {
     private final DevisRepository devisRepository;
@@ -16,5 +18,9 @@ public class DevisServiceImpl implements DevisService {
     public boolean ajouterDevis(Devis devis) {
         this.devisRepository.createDevis(devis);
         return true;
+    }
+
+    public Devis getDevisByProjetId(int projetId) {
+        return devisRepository.getDevisByProjetId(projetId);
     }
 }

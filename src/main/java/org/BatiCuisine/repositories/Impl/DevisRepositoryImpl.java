@@ -1,13 +1,15 @@
 package org.BatiCuisine.repositories.Impl;
 
 import org.BatiCuisine.config.DatabaseConnection;
-import org.BatiCuisine.models.entities.Devis;
+import org.BatiCuisine.models.entities.*;
+import org.BatiCuisine.models.enums.EtatProjet;
 import org.BatiCuisine.repositories.Inter.DevisRepository;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class DevisRepositoryImpl implements DevisRepository {
 
@@ -27,9 +29,37 @@ public class DevisRepositoryImpl implements DevisRepository {
             pstmt.setInt(5, devis.getProjet().getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("SQL Error: " + e.getMessage());
+            System.err.println("SQL Error while creating Devis: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public Devis getDevisByProjetId(int projetId) {
+        String query = "SELECT * FROM devis WHERE projet_id = ?";
+        Devis devis = null;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, projetId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                int devisId = rs.getInt("id");
+                double montantEstime = rs.getDouble("montant_estime");
+                LocalDate dateEmission = rs.getDate("date_emission").toLocalDate();
+                LocalDate dateValidite = rs.getDate("date_validite").toLocalDate();
+                boolean accepte = rs.getBoolean("accepte");
+
+                Projet projet = new Projet();
+                projet.setId(projetId);
+
+                devis = new Devis(montantEstime, dateEmission, dateValidite, accepte, projet);
+            }
+        } catch (SQLException e) {
+            System.err.println("SQL Error while fetching Devis by project ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return devis;
     }
 
 }
