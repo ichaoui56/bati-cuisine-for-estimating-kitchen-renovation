@@ -11,6 +11,8 @@ import org.BatiCuisine.services.Inter.ProjetService;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ProjetUI {
@@ -71,14 +73,51 @@ public class ProjetUI {
 
         composantUI.updateTva(tva);
 
-        projetService.modifierMargeBenef(projet.getId(), margeBenef);
-
         System.out.println("\n");
         System.out.println("\n");
         System.out.println("||                                    ⌛ Calcul du coût en cours... ⏳                                  ||");
 
         devisUI.displayDevis(client, projet, material, mainOeuvre, margeBenef, tva);
 
+    }
+
+    public void displayAllProjects() throws SQLException {
+        System.out.println("\n\n");
+        System.out.println("**===============================|(    \u001B[36m📂   Liste des Projets   📂\u001B[0m    )|===============================**");
+        System.out.println("\n");
+
+        Optional<Map<Integer, Projet>> optionalProjects = projetService.fetchAllProjects();
+
+        if (optionalProjects.isPresent() && !optionalProjects.get().isEmpty()) {
+            for (Map.Entry<Integer, Projet> entry : optionalProjects.get().entrySet()) {
+                Projet projet = entry.getValue();
+                Client client = projet.getClient();
+
+                System.out.println("        **=======================|(    \u001B[36m📂   Projet number " + projet.getId() + "   📂\u001B[0m    )|=========================**");
+                System.out.println("        ||                                                                                       ||");
+
+                System.out.println("               Nom: " + projet.getNomProjet()
+                        + " | Marge: " + String.format("%.2f", projet.getMargeBeneficiaire())
+                        + " | Coût Total: " + String.format("%.2f", projet.getCoutTotal())
+                        + " | Surface: " + String.format("%.2f", projet.getSurface())
+                        + " | État: " + projet.getEtat());
+
+                System.out.println("               Nom: " + client.getNom()
+                        + " | Marge: " + String.format("%.2f", projet.getMargeBeneficiaire())
+                        + " | Coût Total: " + String.format("%.2f", projet.getCoutTotal())
+                        + " | Surface: " + String.format("%.2f", projet.getSurface())
+                        + " | État: " + projet.getEtat());
+
+                System.out.println("        ||                                                                                       ||");
+                System.out.println("        **=======================================================================================**");
+                System.out.println("\n");
+            }
+        } else {
+            System.out.println("Aucun projet trouvé.");
+        }
+        System.out.println("\n");
+        System.out.println("**====================================================================================================**");
+        System.out.println("\n\n");
     }
 
 

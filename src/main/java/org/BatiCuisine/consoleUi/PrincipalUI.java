@@ -1,5 +1,6 @@
 package org.BatiCuisine.consoleUi;
 
+import org.BatiCuisine.models.entities.Projet;
 import org.BatiCuisine.services.Inter.ClientService;
 
 import java.sql.SQLException;
@@ -8,9 +9,11 @@ import java.util.Scanner;
 public class PrincipalUI {
     private final Scanner scanner = new Scanner(System.in);
     private final ClientUI clientUI;
+    private final ProjetUI projetUI;
 
-    PrincipalUI(ClientUI clientUI) {
+    PrincipalUI(ClientUI clientUI, ProjetUI projetUI) {
         this.clientUI = clientUI;
+        this.projetUI = projetUI;
     }
 
     public void displayMenu() throws SQLException {
@@ -41,7 +44,7 @@ public class PrincipalUI {
                     clientUI.createProject();
                     break;
                 case 2:
-                    System.out.println("Affichage des projets existants...");
+                    projetUI.displayAllProjects();;
                     break;
                 case 3:
                     System.out.println("Affichage  projets existants...");

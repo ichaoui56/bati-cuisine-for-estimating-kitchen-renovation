@@ -37,5 +37,24 @@ public class ClientRepositoryImpl implements ClientRepository {
         }
     }
 
+    public Client getClientById(int id) throws SQLException {
+        String query = "SELECT * FROM client WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    Client client = new Client();
+                    client.setId(rs.getInt("id"));
+                    client.setNom(rs.getString("nom"));
+                    client.setAddress(rs.getString("address"));
+                    client.setPhoneNumber(rs.getString("phone_number"));
+                    client.setEstProfessionnal(rs.getBoolean("est_professionnal"));
+                    return client;
+                } else {
+                    throw new SQLException("Client with ID " + id + " not found.");
+                }
+            }
+        }
+    }
 
 }
