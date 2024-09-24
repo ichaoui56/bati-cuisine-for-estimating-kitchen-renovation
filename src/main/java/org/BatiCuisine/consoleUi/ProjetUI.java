@@ -1,10 +1,8 @@
 package org.BatiCuisine.consoleUi;
 
-import org.BatiCuisine.models.entities.Client;
-import org.BatiCuisine.models.entities.MainOeuvre;
-import org.BatiCuisine.models.entities.Material;
-import org.BatiCuisine.models.entities.Projet;
+import org.BatiCuisine.models.entities.*;
 import org.BatiCuisine.models.enums.EtatProjet;
+import org.BatiCuisine.services.Inter.DevisService;
 import org.BatiCuisine.services.Inter.MainOeuvreService;
 import org.BatiCuisine.services.Inter.MaterialService;
 import org.BatiCuisine.services.Inter.ProjetService;
@@ -18,14 +16,16 @@ import java.util.Scanner;
 public class ProjetUI {
     private final Scanner scanner = new Scanner(System.in);
     private ProjetService projetService;
+    private final DevisService devisService;
     private final ComposantUI composantUI;
     private final DevisUI devisUI;
 
 
-    public ProjetUI(ProjetService projetService, ComposantUI composantUI, DevisUI devisUI) {
+    public ProjetUI(ProjetService projetService, ComposantUI composantUI, DevisUI devisUI, DevisService devisService) {
         this.projetService = projetService;
         this.composantUI = composantUI;
         this.devisUI = devisUI;
+        this.devisService = devisService;
     }
 
     public void addProjet(Client client) throws SQLException {
@@ -81,7 +81,7 @@ public class ProjetUI {
 
     }
 
-    public void displayAllProjects() throws SQLException {
+    public void displayAllProjects(){
         System.out.println("\n\n");
         System.out.println("**===============================|(    \u001B[36m📂   Liste des Projets   📂\u001B[0m    )|===============================**");
         System.out.println("\n");
@@ -91,22 +91,20 @@ public class ProjetUI {
         if (optionalProjects.isPresent() && !optionalProjects.get().isEmpty()) {
             for (Map.Entry<Integer, Projet> entry : optionalProjects.get().entrySet()) {
                 Projet projet = entry.getValue();
-                Client client = projet.getClient();
 
                 System.out.println("        **=======================|(    \u001B[36m📂   Projet number " + projet.getId() + "   📂\u001B[0m    )|=========================**");
                 System.out.println("        ||                                                                                       ||");
 
-                System.out.println("               Nom: " + projet.getNomProjet()
+                System.out.println("          Nom: " + projet.getNomProjet()
                         + " | Marge: " + String.format("%.2f", projet.getMargeBeneficiaire())
                         + " | Coût Total: " + String.format("%.2f", projet.getCoutTotal())
                         + " | Surface: " + String.format("%.2f", projet.getSurface())
                         + " | État: " + projet.getEtat());
 
-                System.out.println("               Nom: " + client.getNom()
-                        + " | Marge: " + String.format("%.2f", projet.getMargeBeneficiaire())
-                        + " | Coût Total: " + String.format("%.2f", projet.getCoutTotal())
-                        + " | Surface: " + String.format("%.2f", projet.getSurface())
-                        + " | État: " + projet.getEtat());
+                System.out.println("               Nom: " + projet.getClient().getNom()
+                        + " | Address: " + projet.getClient().getAddress()
+                        + " | Phone Number: " + projet.getClient().getPhoneNumber()
+                        + " | Type: " + projet.getClient().isEstProfessionnal());
 
                 System.out.println("        ||                                                                                       ||");
                 System.out.println("        **=======================================================================================**");
@@ -118,6 +116,139 @@ public class ProjetUI {
         System.out.println("\n");
         System.out.println("**====================================================================================================**");
         System.out.println("\n\n");
+    }
+
+    public void displayProjets(PrincipalUI principalUI) throws SQLException {
+        int choix = 0;
+        do {
+            System.out.println("\n");
+            System.out.println("**=================================|(    \u001B[32m📃   Menu projet   📃\u001B[0m    )|=================================**");
+            System.out.println("||                                                                                                    ||");
+            System.out.println("||                                    1. Chercher un projet existant                                  ||");
+            System.out.println("||                                    2. Quitter                                                      ||");
+            System.out.println("||                                                                                                    ||");
+            System.out.println("**====================================================================================================**");
+            System.out.print("                                           Entrez votre choix : ");
+            String input = scanner.nextLine().trim();
+            System.out.println("\n");
+
+            try {
+                choix = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("                                 Choix invalide. Veuillez réessayer.");
+                continue;
+            }
+
+            switch (choix) {
+                case 1:
+                    searchProjet();
+                    break;
+                case 2:
+                    principalUI.displayMenu();
+                    break;
+                default:
+                    System.out.println("Choix invalide. Veuillez réessayer.");
+            }
+        } while (choix != 3);
+    }
+
+    public void searchProjet() throws SQLException {
+
+        boolean continueSearching;
+        do {
+            continueSearching = false;
+            System.out.print("                                  Entrez le nom du projet à chercher : ");
+            String name = scanner.nextLine().trim();
+
+            Map<Integer, Projet> projets = projetService.searchProjetByName(name);
+
+            if (projets.isEmpty()) {
+                System.out.println("                                Aucun projet trouvé avec le nom : " + name);
+            } else if (projets.size() > 1) {
+                displayProjetSuggestions(projets);
+                selectProjet(projets);
+            } else {
+                Projet projet = projets.values().iterator().next();
+                displayProjetDetails(projet);
+
+                System.out.print("                            Souhaitez-vous continuer avec ce projet ? (oui/non) : ");
+                String response = scanner.nextLine().trim().toLowerCase();
+                if (response.equals("oui")) {
+                    displayProjectCostEstimate(projet);
+                } else {
+                    continueSearching = true;
+                }
+            }
+        } while (continueSearching);
+    }
+
+    private void selectProjet(Map<Integer, Projet> projets) throws SQLException {
+        System.out.print("                  Veuillez entrer l'ID du projet pour continuer : ");
+        String input = scanner.nextLine().trim();
+        System.out.println("\n");
+        try {
+            int projetId = Integer.parseInt(input);
+            if (projets.containsKey(projetId)) {
+                Projet selectedProjet = projets.get(projetId);
+                displayProjectCostEstimate(selectedProjet);
+            } else {
+                System.out.println("                                ID de projet invalide. Veuillez réessayer.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("                                        Veuillez entrer un ID valide.");
+        }
+    }
+
+    private void displayProjetDetails(Projet projet) {
+        System.out.println("\n");
+        System.out.println("        **=========================|(\u001B[32m📃   Résultats de la recherche   📃\u001B[0m)|=======================**");
+        System.out.println("        ||                                                                                       ||");
+        System.out.println("               ID : " + projet.getId()
+                + " | Nom : " + projet.getNomProjet()
+                + " | Etat : " + projet.getEtat()
+                + " | Marge Beneficiaire : " + projet.getMargeBeneficiaire()
+                + "\n                                   Surface : " + projet.getSurface()
+                + " | Cout Total : " + projet.getCoutTotal());
+
+        System.out.println("        ||                                                                                       ||");
+        System.out.println("        **=======================================================================================**");
+    }
+
+    private void displayProjetSuggestions(Map<Integer, Projet> projets) {
+        System.out.println("\n");
+        System.out.println("        **=============================|(\u001B[32m📃   Projets trouvés   📃\u001B[0m)|===========================**");
+        System.out.println("        ||                                                                                       ||");
+
+        projets.forEach((id, projet) -> {
+            System.out.println("               ID : " + projet.getId()
+                    + " | Nom : " + projet.getNomProjet()
+                    + " | Etat : " + projet.getEtat()
+                    + " | Marge Beneficiaire : " + projet.getMargeBeneficiaire()
+                    + "\n                                   Surface : " + projet.getSurface()
+                    + " | Cout Total : " + projet.getCoutTotal());
+        });
+        System.out.println("        ||                                                                                       ||");
+        System.out.println("        **=======================================================================================**");
+        System.out.println("\n");
+    }
+
+    private void displayProjectCostEstimate(Projet projet) throws SQLException {
+        System.out.println("\n        **===================================|(\u001B[32m📄   Cout Total   📄\u001B[0m)|===============================**");
+        System.out.println("        ||                                                                                       ||");
+
+        Devis devis = devisService.getDevisByProjetId(projet.getId());
+
+        if (devis != null) {
+            double totalCost = devis.getMontantEstime();
+
+            System.out.println("                            Coût Total total pour le projet '" + projet.getNomProjet() + "' : "
+                    + String.format("%.2f", totalCost) + " MAD");
+        } else {
+            System.out.println("               Aucun devis trouvé pour le projet '" + projet.getNomProjet() + "'.");
+        }
+
+        System.out.println("        ||                                                                                       ||");
+        System.out.println("        **=======================================================================================**");
     }
 
 

@@ -35,22 +35,25 @@ public class PrincipalUI {
             try {
                 choix = Integer.parseInt(input);
             } catch (NumberFormatException e) {
-                System.out.println(" Choix invalide. Veuillez réessayer.");
+                System.out.println("\n");
+                System.out.println("Choix invalide. Veuillez réessayer.");
                 continue;
             }
 
             switch (choix) {
                 case 1:
-                    clientUI.createProject();
+                    clientUI.createProject(this);
                     break;
                 case 2:
                     projetUI.displayAllProjects();;
                     break;
                 case 3:
-                    System.out.println("Affichage  projets existants...");
+                    projetUI.displayProjets(this);
                     break;
                 case 4:
-                    System.out.println("Quitter l'application...");
+                    System.out.println("\n");
+                    System.out.println("                                          Quitter l'application...");
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Choix invalide. Veuillez réessayer.");

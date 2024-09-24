@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
 group = "src.main.java.org.BatiCuisine"
@@ -17,4 +18,12 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.shadowJar {
+    manifest {
+        attributes(
+            "Main-Class" to "org.BatiCuisine.Main"
+        )
+    }
 }

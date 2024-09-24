@@ -10,4 +10,5 @@ public interface ProjetRepository{
     Projet addProjet(Projet projet) throws SQLException;
     void updateMargeBenef(int id, double margeBenef, double coutTotal) throws SQLException;
     Optional<Map<Integer, Projet>> getAllProjects();
+    Map<Integer, Projet> searchProjetByName(String name) throws SQLException;
 }

@@ -26,4 +26,8 @@ public class ProjetServiceImpl implements ProjetService {
     public Optional<Map<Integer, Projet>> fetchAllProjects() {
         return projetRepository.getAllProjects();
     }
+
+    public Map<Integer, Projet> searchProjetByName(String name) throws SQLException {
+        return projetRepository.searchProjetByName(name);
+    }
 }
